@@ -1,6 +1,8 @@
+
 import logo from '../assets/logo.png';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 
 const Header = () => {
@@ -14,6 +16,8 @@ const Header = () => {
       const user = JSON.parse(localStorage.getItem('loggedInUser'));
       if (user) isLoggedIn = true;
     } catch {}
+
+    const [menuOpen, setMenuOpen] = useState(false);
 
     return (
       <header className="sticky top-0 z-50 transition-all duration-300 bg-white">
@@ -34,17 +38,42 @@ const Header = () => {
                 Go to Profile
               </button>
             ) : (
-              <nav className="flex items-center space-x-8">
-                <a href="#howitworks" className="text-gray-600 hover:text-gray-900 transition-colors cursor-pointer">
-                  How It Works
-                </a>
-                <Link to='/login' className="text-[#DC2626] hover:text-red-600 transition-colors font-medium cursor-pointer">
-                  Login
-                </Link>
-                <Link to='/signup' className="bg-[#DC2626] hover:bg-red-600 text-white px-6 py-2 rounded-md font-medium transition-colors cursor-pointer">
-                  Sign Up
-                </Link>
-              </nav>
+              <>
+                <nav className="hidden md:flex items-center space-x-8">
+                  <a href="#howitworks" className="text-gray-600 hover:text-gray-900 transition-colors cursor-pointer">
+                    How It Works
+                  </a>
+                  <Link to='/login' className="text-[#DC2626] hover:text-red-600 transition-colors font-medium cursor-pointer">
+                    Login
+                  </Link>
+                  <Link to='/signup' className="bg-[#DC2626] hover:bg-red-600 text-white px-6 py-2 rounded-md font-medium transition-colors cursor-pointer">
+                    Sign Up
+                  </Link>
+                </nav>
+                {/* Mobile menu button */}
+                <div className="md:hidden">
+                  <button
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    className="text-gray-700 focus:outline-none cursor-pointer ml-2"
+                  >
+                    {menuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+                  </button>
+                </div>
+                {/* Mobile menu dropdown */}
+                {menuOpen && (
+                  <div className="absolute top-16 right-4 left-4 bg-white shadow-lg rounded-lg p-4 flex flex-col space-y-4 z-50 md:hidden">
+                    <a href="#howitworks" className="text-gray-600 hover:text-gray-900 transition-colors cursor-pointer block">
+                      How It Works
+                    </a>
+                    <Link to='/login' className="text-[#DC2626] hover:text-red-600 transition-colors font-medium cursor-pointer block">
+                      Login
+                    </Link>
+                    <Link to='/signup' className="bg-[#DC2626] hover:bg-red-600 text-white px-6 py-2 rounded-md font-medium transition-colors cursor-pointer block text-center">
+                      Sign Up
+                    </Link>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
